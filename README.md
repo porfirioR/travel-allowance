@@ -1,7 +1,7 @@
 # travel-allowance
 Travel allowance calculation of the Ministry of Finance Paraguay
 
-# Myapp
+# travel-allowance
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.6.
 
