@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "travel-allowance-app": {
+      "hosting": {
+        "travel-allowance": [
+          "travel-allowance-app"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "travel-allowance-app"
+  }
+}

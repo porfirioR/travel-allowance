@@ -109,6 +109,23 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "version": 2
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "travel-allowance:build:production",
+              "serveTarget": "travel-allowance:serve:production"
+            },
+            "development": {
+              "buildTarget": "travel-allowance:build:development",
+              "serveTarget": "travel-allowance:serve:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }
