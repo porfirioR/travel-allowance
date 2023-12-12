@@ -10,7 +10,7 @@ export const routes: Routes = [
   },
   {
     path: 'configuration',
-    title: 'Configuracion',
+    title: 'Configuración',
     component: ConfigurationComponent
   }
 ];
