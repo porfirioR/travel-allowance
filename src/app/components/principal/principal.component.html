@@ -1,7 +1,37 @@
-<mat-sidenav-container>
-  <mat-sidenav mode="over" align="start" opened>
-    Sidenav content
-  </mat-sidenav>
-  <!-- Body -->
+<mat-toolbar color="primary">
+  <span>Title</span>
+  <button mat-stroked-button routerLink="/configuration" align="end">
+    Ver
+  </button>
+</mat-toolbar>
+@if (loading) {
+<mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+} @else {
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Calcular Viatico</mat-card-title>
+  </mat-card-header>
+  <mat-card-content [formGroup]="formGroup">
+    <mat-form-field class="w-100">
+      <mat-label>Dias de viaje</mat-label>
+      <input matInput type="number" formControlName="days" min="1" />
+    </mat-form-field>
+    <mat-checkbox class="w-100" color="primary" formControlName="isSameDepartment">Es el mismo departamento</mat-checkbox>
+    @if (formGroup.controls.isSameDepartment.value) {
+      <mat-form-field class="w-100">
+        <mat-label>Departamentos</mat-label>
+        <mat-select>
+          @for (department of departmentModels; track department) {
+            <mat-option [value]="department.id">{{department.name}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    }
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <button mat-raised-button color="primary" (click)="generateDays()">Generar Dias</button>
+  </mat-card-actions>
+  <mat-divider></mat-divider>
 
-</mat-sidenav-container>
+</mat-card>
+}

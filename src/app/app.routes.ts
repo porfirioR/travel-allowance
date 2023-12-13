@@ -5,12 +5,12 @@ import { PrincipalComponent } from './components/principal/principal.component';
 export const routes: Routes = [
   {
     path: '',
-    title: 'Travel Allowance',
+    title: 'Viático',
     component: PrincipalComponent
   },
   {
     path: 'configuration',
-    title: 'Configuration',
+    title: 'Configuración',
     component: ConfigurationComponent
   }
 ];
