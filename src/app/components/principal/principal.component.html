@@ -1,7 +1,9 @@
 <mat-toolbar color="primary">
-  <span>Title</span>
-  <button mat-stroked-button routerLink="/configuration" align="end">
-    Ver
+  <div class="align-center">
+    <span>Viático</span>
+  </div>
+  <button class="m-l-end" mat-stroked-button routerLink="/configuration">
+    Ver Departamentos
   </button>
 </mat-toolbar>
 @if (loading) {
@@ -9,7 +11,7 @@
 } @else {
 <mat-card>
   <mat-card-header>
-    <mat-card-title>Calcular Viatico</mat-card-title>
+    <mat-card-title>Calcular Viático</mat-card-title>
   </mat-card-header>
   <mat-card-content [formGroup]="formGroup">
     <mat-form-field class="w-100">
