@@ -16,13 +16,21 @@
   <mat-card-content [formGroup]="formGroup">
     <mat-form-field class="w-100">
       <mat-label>Dias de viaje</mat-label>
-      <input matInput type="number" formControlName="days" min="1" />
+      <input matInput type="number" formControlName="days"/>
+      <mat-error *ngIf="formGroup.get('days')?.hasError('required')">
+        Los Días de viaje es un campo obligatorio
+      </mat-error>
+      <mat-error *ngIf="formGroup.get('days')?.hasError('min')">
+        Los Días de viaje debe ser como mínimo 1
+      </mat-error>
     </mat-form-field>
-    <mat-checkbox class="w-100" color="primary" formControlName="isSameDepartment">Es el mismo departamento</mat-checkbox>
+    <mat-checkbox class="w-100" color="primary" formControlName="isSameDepartment">
+      Es el mismo departamento
+    </mat-checkbox>
     @if (formGroup.controls.isSameDepartment.value) {
       <mat-form-field class="w-100">
         <mat-label>Departamentos</mat-label>
-        <mat-select>
+        <mat-select formControlName="sameDepartment">
           @for (department of departmentModels; track department) {
             <mat-option [value]="department.id">{{department.name}}</mat-option>
           }
@@ -31,7 +39,7 @@
     }
   </mat-card-content>
   <mat-card-actions align="end">
-    <button mat-raised-button color="primary" (click)="generateDays()">Generar Dias</button>
+    <button mat-raised-button color="primary" [disabled]="formGroup.invalid" (click)="generateDays()">Generar Dias</button>
   </mat-card-actions>
   <mat-divider></mat-divider>
 

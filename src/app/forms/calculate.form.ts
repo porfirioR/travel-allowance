@@ -4,5 +4,6 @@ import { DayItemForm } from "./day-item.form";
 export interface CalculateForm {
   days: FormControl<number | null>,
   isSameDepartment: FormControl<boolean | null>
+  departmentId: FormControl<number | null>
   totalDays: FormArray<FormGroup<DayItemForm>>
 }

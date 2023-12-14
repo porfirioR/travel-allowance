@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { FormArray, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -9,7 +9,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatButtonModule } from '@angular/material/button';
 import { Firestore, Query, collection, collectionData } from '@angular/fire/firestore';
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, combineLatest, debounceTime } from 'rxjs';
 import { CalculateForm } from '../../forms/calculate.form';
 import { DayItemForm } from '../../forms/day-item.form';
 import { DailyWageModel } from '../../models/daily-wage-model';
@@ -46,8 +46,9 @@ export class PrincipalComponent implements OnInit {
   private firestore: Firestore = inject(Firestore)
   protected departmentModels: DepartmentApiModel[] = []
   protected formGroup = new FormGroup<CalculateForm>({
-    days: new FormControl(),
+    days: new FormControl(null, [Validators.required, Validators.min(1)]),
     isSameDepartment: new FormControl(false),
+    departmentId: new FormControl(),
     totalDays: new FormArray<FormGroup<DayItemForm>>([])
   })
   protected loading = true
@@ -70,19 +71,41 @@ export class PrincipalComponent implements OnInit {
         throw e
       }
     })
-    this.formGroup.controls.days.valueChanges.subscribe({
+    this.formGroup.controls.isSameDepartment.valueChanges.pipe(debounceTime(1)).subscribe({
       next: (value) => {
-        
+        if (value) {
+          this.formGroup.controls.departmentId.addValidators(Validators.required)
+        } else {
+          this.formGroup.controls.departmentId.removeValidators(Validators.required)
+          this.formGroup.controls.departmentId.setValue(null)
+        }
       }, error: (e) => {
-        
         throw e
       }
     })
   }
 
   protected generateDays = () => {
-    new Array(this.formGroup.controls.days.value).fill(null).forEach(x => {
-      
+    this.formGroup.controls.totalDays.clear()
+    const isSameDepartment = this.formGroup.value.isSameDepartment!
+    const amount = this.getReturnAmount(this.formGroup.value.departmentId ?? null)
+    const formGroups = new Array(this.formGroup.controls.days.value).fill(null).map(x => {
+      const formGroup = new FormGroup<DayItemForm>({
+        departmentId: new FormControl({ value: this.formGroup.value.departmentId ?? null, disabled: isSameDepartment }),
+        amount: new FormControl(amount)
+      })
+      return formGroup
     })
+    formGroups.at(formGroups.length -1)?.controls.amount.setValue(this.getReturnAmount(this.formGroup.value.departmentId ?? null, true))
+  }
+
+  private getReturnAmount = (departmentId: number | null, isLastItem = false) => {
+    if (!departmentId) {
+      return null
+    }
+    const department = this.departmentModels.find(y => y.id === departmentId)
+    const percentage = isLastItem ? department!.total80 : department!.total40
+    const amount = this.dailyWageModel!.amount * department!.totalDay * percentage
+    return amount
   }
 }
