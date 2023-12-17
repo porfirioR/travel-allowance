@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, NgZone, OnInit, inject } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -50,6 +50,7 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 })
 export class PrincipalComponent implements OnInit {
   private firestore: Firestore = inject(Firestore)
+  private zone: NgZone = inject(NgZone)
   protected departmentModels: DepartmentApiModel[] = []
   protected days: number[] = new Array(5).fill(null).map((x, i) => i +1)
 
@@ -85,7 +86,9 @@ export class PrincipalComponent implements OnInit {
       next: (value) => {
         if (value) {
           this.formGroup.controls.departmentId.addValidators(Validators.required)
+          this.formGroup.controls.totalDays.controls.forEach(x => x.controls.departmentId.disable())
         } else {
+          this.formGroup.controls.totalDays.controls.forEach(x => x.controls.departmentId.enable())
           this.formGroup.controls.departmentId.removeValidators(Validators.required)
         }
         this.formGroup.controls.departmentId.setValue(null)
@@ -99,10 +102,10 @@ export class PrincipalComponent implements OnInit {
           const length = this.formGroup.controls.totalDays.length
           value.forEach((x, i) => {
             const amount = this.getReturnAmount(x.departmentId ?? null, (length -1) === i, length === 1)
-            this.formGroup.controls.totalDays.at(i).controls.amount.setValue(amount)
+            this.formGroup.controls.totalDays.at(i).controls.amount.setValue(amount, { onlySelf: false, emitEvent: false, emitModelToViewChange: true, emitViewToModelChange: true })
           })
-          this.formGroup.controls.totalAmount.setValue(this.formGroup.controls.totalDays.value.reduce((a, b) => (b.amount ?? 0) + a, 0))
         }
+        this.calculateTotalAmount()
       }, error: (e) => {
         throw e
       }
@@ -122,7 +125,7 @@ export class PrincipalComponent implements OnInit {
     })
     formGroups.at(formGroups.length -1)?.controls.amount.setValue(this.getReturnAmount(this.formGroup.value.departmentId ?? null, true, formGroups.length === 1))
     formGroups.forEach(x => this.formGroup.controls.totalDays.push(x))
-    this.formGroup.controls.totalAmount.setValue(this.formGroup.controls.totalDays.value.reduce((a, b) => (b.amount ?? 0) + a, 0))
+    this.calculateTotalAmount()
   }
 
   private getReturnAmount = (departmentId: number | null, isLastItem = false, isSingleOne = false) => {
@@ -133,5 +136,10 @@ export class PrincipalComponent implements OnInit {
     const percentage = isLastItem ? isSingleOne ? this.dailyWageModel!.total60 : this.dailyWageModel!.total40 : this.dailyWageModel!.total80
     const amount = this.dailyWageModel!.amount * department!.totalDay * percentage
     return Math.ceil(amount)
+  }
+
+  private calculateTotalAmount = () => {
+    const amount = this.formGroup.controls.totalDays.getRawValue().reduce((a, b) => (b.amount ?? 0) + a, 0)
+    this.formGroup.controls.totalAmount.setValue(amount)
   }
 }

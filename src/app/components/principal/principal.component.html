@@ -81,7 +81,7 @@
       </mat-card-title>
     </mat-card-header>
   }
-  <mat-card-footer align="end">
+  <mat-card-footer *ngIf="formGroup.controls.totalDays.controls.length > 0">
     Total: {{formGroup.value.totalAmount | number: '': 'es'}}
   </mat-card-footer>
 
