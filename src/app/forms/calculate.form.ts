@@ -6,4 +6,5 @@ export interface CalculateForm {
   isSameDepartment: FormControl<boolean | null>
   departmentId: FormControl<number | null>
   totalDays: FormArray<FormGroup<DayItemForm>>
+  totalAmount: FormControl<number | null>
 }

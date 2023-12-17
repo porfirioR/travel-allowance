@@ -6,6 +6,10 @@ mat-label {
   margin-bottom: 0.3rem;
 }
 
+mat-hint{
+  margin-top: 0.3rem;
+}
+
 section {
   display: flex;
   margin: 0.3rem 0.7rem;
@@ -15,4 +19,17 @@ section {
   mat-form-field:nth-child(even) {
     margin-left: .1rem;
   }
+}
+
+mat-card-content mat-label {
+  margin-bottom: 0.3rem;
+}
+
+mat-card {
+  margin-top: 1rem;
+}
+
+mat-card-header {
+  display: flex;
+  justify-content: center;
 }

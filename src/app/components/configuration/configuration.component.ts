@@ -42,7 +42,7 @@ export class ConfigurationComponent {
   protected loading = true
   protected formGroup = new FormGroup<DailyWageForm>({
     id: new FormControl(),
-    amount: new FormControl(),
+    amount: new FormControl({ value: null, disabled: true }),
     total100: new FormControl({ value: null, disabled: true }),
     total40: new FormControl({ value: null, disabled: true }),
     total80: new FormControl({ value: null, disabled: true })
@@ -65,7 +65,7 @@ export class ConfigurationComponent {
           total80: dailyWage?.total80,
           total40: dailyWage?.total40,
         })
-        this.departments = departments.sort((a, b) => a.id - b.id).map(x => new DepartmentViewModel(x.id, x.name, x.totalDay, x.totalDay * dailyWage!.amount))
+        this.departments = departments.sort((a, b) => a.id - b.id).map(x => new DepartmentViewModel(x.id, x.name, x.totalDay, Math.ceil(x.totalDay * dailyWage!.amount)))
         this.loading = false
       }, error: (e) => {
         this.loading = false
