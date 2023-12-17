@@ -1,7 +1,7 @@
 <mat-toolbar color="primary">
-  <div class="align-center">
+  <mat-label class="align-center">
     <span>Viático</span>
-  </div>
+  </mat-label>
   <button class="m-l-end" mat-stroked-button routerLink="/configuration">
     Ver Departamentos
   </button>
@@ -15,14 +15,14 @@
   </mat-card-header>
   <mat-card-content [formGroup]="formGroup">
     <mat-form-field class="w-100">
-      <mat-label>Dias de viaje</mat-label>
-      <input matInput type="number" formControlName="days"/>
-      <mat-error *ngIf="formGroup.get('days')?.hasError('required')">
-        Los Días de viaje es un campo obligatorio
-      </mat-error>
-      <mat-error *ngIf="formGroup.get('days')?.hasError('min')">
-        Los Días de viaje debe ser como mínimo 1
-      </mat-error>
+      <mat-label>Días de viaje</mat-label>
+      <mat-select formControlName="days">
+        <mat-option [value]="null">Seleccione un día</mat-option>
+        @for (day of days; track day) {
+          <mat-option [value]="day">{{day}}</mat-option>
+        }
+      </mat-select>
+      <mat-hint align="start">Cantidad de dias de viaje</mat-hint>
     </mat-form-field>
     <mat-checkbox class="w-100" color="primary" formControlName="isSameDepartment">
       Es el mismo departamento
@@ -30,7 +30,7 @@
     @if (formGroup.controls.isSameDepartment.value) {
       <mat-form-field class="w-100">
         <mat-label>Departamentos</mat-label>
-        <mat-select formControlName="sameDepartment">
+        <mat-select formControlName="departmentId">
           @for (department of departmentModels; track department) {
             <mat-option [value]="department.id">{{department.name}}</mat-option>
           }
@@ -42,6 +42,29 @@
     <button mat-raised-button color="primary" [disabled]="formGroup.invalid" (click)="generateDays()">Generar Dias</button>
   </mat-card-actions>
   <mat-divider></mat-divider>
-
+  <mat-label>
+    Días:
+  </mat-label>
+  @for (amountDay of formGroup.controls.totalDays.controls; track $index) {
+    <mat-label>
+      Día {{$index}}
+    </mat-label>
+    <section [formGroup]="amountDay">
+      <mat-form-field class="w-50">
+        <mat-label>Departamentos</mat-label>
+        <mat-select formControlName="departmentId">
+          @for (department of departmentModels; track department) {
+            <mat-option [value]="department.id">{{department.name}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="w-50">
+        <mat-label>Monto por día</mat-label>
+        <input matInput type="text" formControlName="amount" [mask]="mask" [thousandSeparator]="thousandSeparator"/>
+      </mat-form-field>
+    </section>
+  } @empty {
+    <span>Favor seleccione los campos para calcular los montos</span>
+  }
 </mat-card>
 }

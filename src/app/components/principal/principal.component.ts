@@ -19,6 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSelectModule } from '@angular/material/select';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 
 @Component({
   selector: 'app-principal',
@@ -37,7 +38,12 @@ import { MatSelectModule } from '@angular/material/select';
     MatInputModule,
     MatCheckboxModule,
     MatDividerModule,
-    MatSelectModule
+    MatSelectModule,
+    NgxMaskDirective,
+    NgxMaskPipe
+  ],
+  providers: [
+    provideNgxMask()
   ],
   templateUrl: './principal.component.html',
   styleUrl: './principal.component.scss',
@@ -45,15 +51,18 @@ import { MatSelectModule } from '@angular/material/select';
 export class PrincipalComponent implements OnInit {
   private firestore: Firestore = inject(Firestore)
   protected departmentModels: DepartmentApiModel[] = []
+  protected days: number[] = [1, 2, 3, 4, 5]
+
   protected formGroup = new FormGroup<CalculateForm>({
-    days: new FormControl(null, [Validators.required, Validators.min(1)]),
+    days: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(5)]),
     isSameDepartment: new FormControl(false),
     departmentId: new FormControl(),
     totalDays: new FormArray<FormGroup<DayItemForm>>([])
   })
   protected loading = true
   protected dailyWageModel: DailyWageModel | undefined
-
+  protected mask = 'separator.0'
+  protected thousandSeparator = '.'
   ngOnInit(): void {
     const departmentRef = collection(this.firestore, 'departments')
     const departments$: Observable<DepartmentApiModel[]> = collectionData<DepartmentApiModel>(departmentRef as Query<DepartmentApiModel>, { idField: 'id' })
@@ -96,15 +105,16 @@ export class PrincipalComponent implements OnInit {
       })
       return formGroup
     })
-    formGroups.at(formGroups.length -1)?.controls.amount.setValue(this.getReturnAmount(this.formGroup.value.departmentId ?? null, true))
+    formGroups.at(formGroups.length -1)?.controls.amount.setValue(this.getReturnAmount(this.formGroup.value.departmentId ?? null, true, formGroups.length === 1))
+    formGroups.forEach(x => this.formGroup.controls.totalDays.push(x))
   }
 
-  private getReturnAmount = (departmentId: number | null, isLastItem = false) => {
+  private getReturnAmount = (departmentId: number | null, isLastItem = false, isSingleOne = false) => {
     if (!departmentId) {
       return null
     }
     const department = this.departmentModels.find(y => y.id === departmentId)
-    const percentage = isLastItem ? department!.total80 : department!.total40
+    const percentage = isLastItem ? isSingleOne ? this.dailyWageModel!.total40 : this.dailyWageModel!.total60 : this.dailyWageModel!.total80
     const amount = this.dailyWageModel!.amount * department!.totalDay * percentage
     return amount
   }

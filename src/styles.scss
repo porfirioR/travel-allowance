@@ -53,6 +53,11 @@ body {
 .w-100 {
   width: 100%;
 }
+
+.w-50 {
+  width: 50%;
+}
+
 .align-center {
   display: flex;
   justify-content: center;
@@ -63,4 +68,7 @@ body {
   margin-left: auto;
 }
 
+mat-form-field {
+  margin-bottom: 1rem;
+}
 
