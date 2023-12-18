@@ -11,7 +11,9 @@
 } @else {
 <mat-card>
   <mat-card-header>
-    <mat-card-title>Calcular Viático</mat-card-title>
+    <mat-card-title>
+      Calcular Viático
+    </mat-card-title>
   </mat-card-header>
   <mat-card-content [formGroup]="formGroup">
     <mat-form-field class="w-100">
@@ -53,7 +55,9 @@
 </mat-card>
 <mat-card>
   <mat-card-header *ngIf="formGroup.controls.totalDays.controls.length > 0">
-    <mat-card-title>Viático por día</mat-card-title>
+    <mat-card-title>
+      Viático por día
+    </mat-card-title>
   </mat-card-header>
   <mat-card-content>
     @for (amountDay of formGroup.controls.totalDays.controls; track $index) {
