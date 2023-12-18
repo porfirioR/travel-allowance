@@ -24,7 +24,7 @@
           <mat-option [value]="day">{{day}}</mat-option>
         }
       </mat-select>
-      <mat-error *ngIf="formGroup.get('days')?.hasError('required')">
+      <mat-error *ngIf="formGroup.controls.days?.hasError('required')">
         Días de viaje es un campo obligatorio
       </mat-error>
       <mat-hint align="start">Cantidad de dias de viaje</mat-hint>
@@ -41,7 +41,7 @@
             <mat-option [value]="department.id">{{department.name}}</mat-option>
           }
         </mat-select>
-        <mat-error *ngIf="formGroup.get('departmentId')?.hasError('required')">
+        <mat-error *ngIf="formGroup.controls.departmentId?.hasError('required')">
           Departamento es un campo obligatorio
         </mat-error>
       </mat-form-field>
@@ -52,8 +52,7 @@
       Generar Dias
     </button>
   </mat-card-actions>
-</mat-card>
-<mat-card>
+  <mat-divider></mat-divider>
   <mat-card-header *ngIf="formGroup.controls.totalDays.controls.length > 0">
     <mat-card-title>
       Viático por día

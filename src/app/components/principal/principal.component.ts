@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -50,7 +50,6 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 })
 export class PrincipalComponent implements OnInit {
   private firestore: Firestore = inject(Firestore)
-  private zone: NgZone = inject(NgZone)
   protected departmentModels: DepartmentApiModel[] = []
   protected days: number[] = new Array(5).fill(null).map((x, i) => i +1)
 

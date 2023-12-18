@@ -16,6 +16,7 @@ import { DepartmentViewModel } from '../../models/department-view-model';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 
 @Component({
   selector: 'app-configuration',
@@ -32,6 +33,11 @@ import { Router, RouterModule } from '@angular/router';
     CommonModule,
     MatButtonModule,
     RouterModule,
+    NgxMaskDirective,
+    NgxMaskPipe
+  ],
+  providers: [
+    provideNgxMask()
   ],
   templateUrl: './configuration.component.html',
   styleUrl: './configuration.component.scss'
@@ -49,6 +55,8 @@ export class ConfigurationComponent {
   })
   protected departments: DepartmentViewModel[] = []
   protected displayedColumns: string[] = ['id', 'name', 'totalDay', 'totalAmount'];
+  protected mask = 'separator.0'
+  protected thousandSeparator = '.'
 
   ngOnInit(): void {
     const departmentRef = collection(this.firestore, 'departments')
