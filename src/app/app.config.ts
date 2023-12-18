@@ -9,6 +9,7 @@ import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 import { registerLocaleData } from '@angular/common';
 import localEs from '@angular/common/locales/es'
+import { provideEnvironmentNgxMask } from 'ngx-mask';
 registerLocaleData(localEs, 'es')
 
 export const appConfig: ApplicationConfig = {
@@ -23,7 +24,7 @@ export const appConfig: ApplicationConfig = {
       provideFirebaseApp(() => initializeApp(environment.firebase)),
       provideFirestore(() => getFirestore()),
     ]),
+    provideEnvironmentNgxMask(),
     { provide: LOCALE_ID, useValue: 'es' },
-
   ]
 };

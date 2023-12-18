@@ -1,7 +1,9 @@
 <mat-toolbar color="primary">
-  <span>Title</span>
-  <button mat-stroked-button routerLink="/configuration" align="end">
-    Ver
+  <mat-label class="align-center">
+    <span>Viático</span>
+  </mat-label>
+  <button class="m-l-end" mat-stroked-button routerLink="/configuration">
+    Ver Departamentos
   </button>
 </mat-toolbar>
 @if (loading) {
@@ -9,29 +11,83 @@
 } @else {
 <mat-card>
   <mat-card-header>
-    <mat-card-title>Calcular Viatico</mat-card-title>
+    <mat-card-title>
+      Calcular Viático
+    </mat-card-title>
   </mat-card-header>
   <mat-card-content [formGroup]="formGroup">
     <mat-form-field class="w-100">
-      <mat-label>Dias de viaje</mat-label>
-      <input matInput type="number" formControlName="days" min="1" />
+      <mat-label>Días de viaje</mat-label>
+      <mat-select formControlName="days">
+        <mat-option [value]="null">Seleccione un día</mat-option>
+        @for (day of days; track day) {
+          <mat-option [value]="day">{{day}}</mat-option>
+        }
+      </mat-select>
+      <mat-error *ngIf="formGroup.controls.days?.hasError('required')">
+        Días de viaje es un campo obligatorio
+      </mat-error>
+      <mat-hint align="start">Cantidad de dias de viaje</mat-hint>
     </mat-form-field>
-    <mat-checkbox class="w-100" color="primary" formControlName="isSameDepartment">Es el mismo departamento</mat-checkbox>
+    <mat-checkbox class="w-100" color="primary" formControlName="isSameDepartment">
+      Es el mismo departamento
+    </mat-checkbox>
     @if (formGroup.controls.isSameDepartment.value) {
       <mat-form-field class="w-100">
         <mat-label>Departamentos</mat-label>
-        <mat-select>
+        <mat-select formControlName="departmentId">
+          <mat-option [value]="null">Seleccione un departamento</mat-option>
+          @for (department of departmentModels; track department) {
+            <mat-option [value]="department.id">{{department.name}}</mat-option>
+          }
+        </mat-select>
+        <mat-error *ngIf="formGroup.controls.departmentId?.hasError('required')">
+          Departamento es un campo obligatorio
+        </mat-error>
+      </mat-form-field>
+    }
+  </mat-card-content>
+  <mat-card-actions align="end">
+    <button mat-raised-button color="primary" [disabled]="formGroup.invalid" (click)="generateDays()">
+      Generar Dias
+    </button>
+  </mat-card-actions>
+  <mat-divider></mat-divider>
+  <mat-card-header *ngIf="formGroup.controls.totalDays.controls.length > 0">
+    <mat-card-title>
+      Viático por día
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    @for (amountDay of formGroup.controls.totalDays.controls; track $index) {
+    <mat-label>
+      Día {{$index + 1}}
+    </mat-label>
+    <section [formGroup]="amountDay">
+      <mat-form-field class="w-50">
+        <mat-label>Departamentos</mat-label>
+        <mat-select formControlName="departmentId">
           @for (department of departmentModels; track department) {
             <mat-option [value]="department.id">{{department.name}}</mat-option>
           }
         </mat-select>
       </mat-form-field>
-    }
-  </mat-card-content>
-  <mat-card-actions align="end">
-    <button mat-raised-button color="primary" (click)="generateDays()">Generar Dias</button>
-  </mat-card-actions>
-  <mat-divider></mat-divider>
+      <mat-form-field class="w-50">
+        <mat-label>Monto por día</mat-label>
+        <input matInput type="text" formControlName="amount" [mask]="mask" [thousandSeparator]="thousandSeparator"/>
+      </mat-form-field>
+    </section>
+  } @empty {
+    <mat-card-header>
+      <mat-card-title>
+        Favor cargue los campos obligatorios para calcular los montos del viático.
+      </mat-card-title>
+    </mat-card-header>
+  }
+  <mat-card-footer *ngIf="formGroup.controls.totalDays.controls.length > 0">
+    Total: {{formGroup.value.totalAmount | number: '': 'es'}}
+  </mat-card-footer>
 
+  </mat-card-content>
 </mat-card>
 }

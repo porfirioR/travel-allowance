@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "prod": "ng build --configuration=production"
   },
   "private": true,
   "dependencies": {
@@ -23,12 +24,13 @@
     "@angular/router": "^17.0.0",
     "@angular/service-worker": "^17.0.0",
     "firebase": "^10.7.1",
+    "ngx-mask": "^17.0.4",
     "rxjs": "~7.8.0",
     "zone.js": "~0.14.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^17.0.6",
-    "@angular/cli": "^17.0.6",
+    "@angular-devkit/build-angular": "^17.0.7",
+    "@angular/cli": "^17.0.7",
     "@angular/compiler-cli": "^17.0.0",
     "@angular/language-service": "^17.0.6",
     "@types/jasmine": "~5.1.0",

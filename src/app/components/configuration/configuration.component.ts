@@ -16,6 +16,7 @@ import { DepartmentViewModel } from '../../models/department-view-model';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
+import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 
 @Component({
   selector: 'app-configuration',
@@ -32,6 +33,11 @@ import { Router, RouterModule } from '@angular/router';
     CommonModule,
     MatButtonModule,
     RouterModule,
+    NgxMaskDirective,
+    NgxMaskPipe
+  ],
+  providers: [
+    provideNgxMask()
   ],
   templateUrl: './configuration.component.html',
   styleUrl: './configuration.component.scss'
@@ -42,13 +48,15 @@ export class ConfigurationComponent {
   protected loading = true
   protected formGroup = new FormGroup<DailyWageForm>({
     id: new FormControl(),
-    amount: new FormControl(),
+    amount: new FormControl({ value: null, disabled: true }),
     total100: new FormControl({ value: null, disabled: true }),
     total40: new FormControl({ value: null, disabled: true }),
     total80: new FormControl({ value: null, disabled: true })
   })
   protected departments: DepartmentViewModel[] = []
   protected displayedColumns: string[] = ['id', 'name', 'totalDay', 'totalAmount'];
+  protected mask = 'separator.0'
+  protected thousandSeparator = '.'
 
   ngOnInit(): void {
     const departmentRef = collection(this.firestore, 'departments')
@@ -65,7 +73,7 @@ export class ConfigurationComponent {
           total80: dailyWage?.total80,
           total40: dailyWage?.total40,
         })
-        this.departments = departments.sort((a, b) => a.id - b.id).map(x => new DepartmentViewModel(x.id, x.name, x.totalDay, x.totalDay * dailyWage!.amount))
+        this.departments = departments.sort((a, b) => a.id - b.id).map(x => new DepartmentViewModel(x.id, x.name, x.totalDay, Math.ceil(x.totalDay * dailyWage!.amount)))
         this.loading = false
       }, error: (e) => {
         this.loading = false

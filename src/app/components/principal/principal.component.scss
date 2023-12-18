@@ -1,0 +1,43 @@
+mat-divider {
+  margin-bottom: 0.5rem;
+}
+
+mat-label {
+  margin-bottom: 0.3rem;
+}
+
+mat-hint{
+  margin-top: 0.3rem;
+}
+
+section {
+  display: flex;
+  margin: 0.3rem 0.7rem;
+  mat-form-field:nth-child(odd) {
+    margin-right: 1rem;
+  }
+  mat-form-field:nth-child(even) {
+    margin-left: .1rem;
+  }
+}
+
+mat-card-content mat-label {
+  margin-bottom: 0.3rem;
+}
+
+mat-card {
+  margin-top: 1rem;
+}
+
+mat-card-header {
+  display: flex;
+  justify-content: center;
+}
+
+mat-card-title {
+  margin-bottom: 0.5rem;
+}
+
+.mat-mdc-form-field-hint-wrapper {
+  padding: 0 0 !important;
+}
