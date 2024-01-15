@@ -60,34 +60,40 @@
   </mat-card-header>
   <mat-card-content>
     @for (amountDay of formGroup.controls.totalDays.controls; track $index) {
-    <mat-label>
-      Día {{$index + 1}}
-    </mat-label>
-    <section [formGroup]="amountDay">
-      <mat-form-field class="w-50">
-        <mat-label>Departamentos</mat-label>
-        <mat-select formControlName="departmentId">
-          @for (department of departmentModels; track department) {
-            <mat-option [value]="department.id">{{department.name}}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field class="w-50">
-        <mat-label>Monto por día</mat-label>
-        <input matInput type="text" formControlName="amount" [mask]="mask" [thousandSeparator]="thousandSeparator"/>
-      </mat-form-field>
-    </section>
-  } @empty {
-    <mat-card-header>
-      <mat-card-title>
-        Favor cargue los campos obligatorios para calcular los montos del viático.
-      </mat-card-title>
-    </mat-card-header>
-  }
-  <mat-card-footer *ngIf="formGroup.controls.totalDays.controls.length > 0">
-    Total: {{formGroup.value.totalAmount | number: '': 'es'}}
-  </mat-card-footer>
-
+      <mat-label>
+        Día {{$index + 1}}
+      </mat-label>
+      <section [formGroup]="amountDay">
+        <mat-form-field class="w-50">
+          <mat-label>Departamentos</mat-label>
+          <mat-select formControlName="departmentId">
+            @for (department of departmentModels; track department) {
+              <mat-option [value]="department.id">{{department.name}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="w-50">
+          <mat-label>Monto por día</mat-label>
+          <input matInput type="text" formControlName="amount" [mask]="mask" [thousandSeparator]="thousandSeparator"/>
+        </mat-form-field>
+        <mat-checkbox class="w-50" color="primary" formControlName="isCapitalDistrict">Es Distrito Capital</mat-checkbox>
+        @if (amountDay && amountDay.controls.isCapitalDistrict.value) {
+          <mat-form-field class="w-50" >
+            <mat-label>Monto</mat-label>
+            <input matInput type="text" formControlName="capitalDistrictAmount" [mask]="mask" [thousandSeparator]="thousandSeparator"/>
+          </mat-form-field>
+        }
+      </section>
+    } @empty {
+      <mat-card-header>
+        <mat-card-title>
+          Favor cargue los campos obligatorios para calcular los montos del viático.
+        </mat-card-title>
+      </mat-card-header>
+    }
+    <mat-card-footer *ngIf="formGroup.controls.totalDays.controls.length > 0">
+      Total: {{formGroup.value.totalAmount | number: '': 'es'}}
+    </mat-card-footer>
   </mat-card-content>
 </mat-card>
 }
