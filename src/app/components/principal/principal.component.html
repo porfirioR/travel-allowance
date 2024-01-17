@@ -60,30 +60,34 @@
   </mat-card-header>
   <mat-card-content>
     @for (amountDay of formGroup.controls.totalDays.controls; track $index) {
-      <mat-label>
-        Día {{$index + 1}}
-      </mat-label>
-      <section [formGroup]="amountDay">
-        <mat-form-field class="w-50">
-          <mat-label>Departamentos</mat-label>
-          <mat-select formControlName="departmentId">
-            @for (department of departmentModels; track department) {
-              <mat-option [value]="department.id">{{department.name}}</mat-option>
+      <form [formGroup]="amountDay">
+        <fieldset class="w-100">
+          <legend>Día {{$index + 1}}</legend>
+          <section>
+            <mat-form-field class="w-60">
+              <mat-label>Departamentos</mat-label>
+              <mat-select formControlName="departmentId">
+                @for (department of departmentModels; track department) {
+                  <mat-option [value]="department.id">{{department.name}}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="w-40">
+              <mat-label>Monto por día</mat-label>
+              <input matInput type="text" formControlName="amount" [mask]="mask" [thousandSeparator]="thousandSeparator"/>
+            </mat-form-field>
+          </section>
+          <section>
+            <mat-checkbox class="w-50" color="primary" formControlName="isCapitalDistrict">Es Distrito Capital</mat-checkbox>
+            @if (amountDay && amountDay.controls.isCapitalDistrict.value) {
+              <mat-form-field class="w-50" >
+                <mat-label>Monto</mat-label>
+                <input matInput type="text" formControlName="capitalDistrictAmount" [mask]="mask" [thousandSeparator]="thousandSeparator"/>
+              </mat-form-field>
             }
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field class="w-50">
-          <mat-label>Monto por día</mat-label>
-          <input matInput type="text" formControlName="amount" [mask]="mask" [thousandSeparator]="thousandSeparator"/>
-        </mat-form-field>
-        <mat-checkbox class="w-50" color="primary" formControlName="isCapitalDistrict">Es Distrito Capital</mat-checkbox>
-        @if (amountDay && amountDay.controls.isCapitalDistrict.value) {
-          <mat-form-field class="w-50" >
-            <mat-label>Monto</mat-label>
-            <input matInput type="text" formControlName="capitalDistrictAmount" [mask]="mask" [thousandSeparator]="thousandSeparator"/>
-          </mat-form-field>
-        }
-      </section>
+          </section>
+        </fieldset>
+      </form>
     } @empty {
       <mat-card-header>
         <mat-card-title>

@@ -104,19 +104,23 @@ export class PrincipalComponent implements OnInit {
     this.formGroup.controls.totalDays.clear()
     const isSameDepartment = this.formGroup.value.isSameDepartment!
     const amount = this.getReturnAmount(this.formGroup.value.departmentId ?? null)
-    const formGroups = new Array(this.formGroup.controls.days.value).fill(null).map(x => {
+    const formGroups = new Array(this.formGroup.controls.days.value).fill(null).map((x, i) => {
       const formGroup = new FormGroup<DayItemForm>({
+        id: new FormControl(i),
         departmentId: new FormControl({ value: this.formGroup.value.departmentId ?? null, disabled: isSameDepartment }),
         amount: new FormControl({value: amount, disabled: true}),
         capitalDistrictAmount: new FormControl({value: 0, disabled: true}),
         isCapitalDistrict: new FormControl(false)
       })
 
-      formGroup.valueChanges.subscribe({
-        next: (dayValueChanges) => {
-          
+      formGroup.valueChanges.pipe(debounceTime(50)).subscribe({
+        next: (dayItem) => {
+          const formGroup = this.formGroup.controls.totalDays.controls.find(x => x.value.id === dayItem.id)
+          if (formGroup) {
+            const capitalDistrictAmount = dayItem.isCapitalDistrict ? formGroup.controls.amount.value! / 2 : 0
+            formGroup.controls.capitalDistrictAmount.setValue(Math.ceil(capitalDistrictAmount), {onlySelf: true, emitEvent: false})
+          }
         }, error: (e) => {
-          
           throw e
         }
       })

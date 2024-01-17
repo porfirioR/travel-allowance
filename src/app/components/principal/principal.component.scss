@@ -13,11 +13,11 @@ mat-hint{
 section {
   display: flex;
   margin: 0.3rem 0.7rem;
-  mat-form-field:nth-child(odd) {
-    margin-right: 1rem;
-  }
+  // mat-form-field:nth-child(odd) {
+  //   margin-right: 0.2rem;
+  // }
   mat-form-field:nth-child(even) {
-    margin-left: .1rem;
+    margin-left: 0.7rem;
   }
 }
 
@@ -40,4 +40,19 @@ mat-card-title {
 
 .mat-mdc-form-field-hint-wrapper {
   padding: 0 0 !important;
+}
+
+fieldset {
+  width: auto;
+  min-inline-size: auto;
+  padding-inline-start: 0.2em;
+  padding-inline-end: 0.2em;
+  margin-bottom: 1rem;
+}
+
+mat-form-field {
+  margin-bottom: 0;
+  div.mat-mdc-form-field-subscript-wrapper.mat-mdc-form-field-bottom-align {
+    display: none !important;
+  }
 }
