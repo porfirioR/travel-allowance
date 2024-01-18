@@ -13,9 +13,6 @@ mat-hint{
 section {
   display: flex;
   margin: 0.3rem 0.7rem;
-  // mat-form-field:nth-child(odd) {
-  //   margin-right: 0.2rem;
-  // }
   mat-form-field:nth-child(even) {
     margin-left: 0.7rem;
   }
@@ -43,7 +40,6 @@ mat-card-title {
 }
 
 fieldset {
-  width: auto;
   min-inline-size: auto;
   padding-inline-start: 0.2em;
   padding-inline-end: 0.2em;
@@ -55,4 +51,19 @@ mat-form-field {
   div.mat-mdc-form-field-subscript-wrapper.mat-mdc-form-field-bottom-align {
     display: none !important;
   }
+}
+
+.p-r-16 {
+  padding-right: 16px;
+}
+
+#amounts {
+  display: flex;
+  justify-content: space-around;
+  mat-label {
+    margin: 1rem 0;
+  }
+}
+input {
+  color: black !important;
 }

@@ -56,7 +56,8 @@ export class PrincipalComponent implements OnInit {
     isSameDepartment: new FormControl(false),
     departmentId: new FormControl(),
     totalDays: new FormArray<FormGroup<DayItemForm>>([]),
-    totalAmount: new FormControl(0)
+    totalAmount: new FormControl(0),
+    amountToBeRendered: new FormControl(0)
   })
   protected loading = true
   protected dailyWageModel: DailyWageModel | undefined
@@ -120,6 +121,7 @@ export class PrincipalComponent implements OnInit {
             const capitalDistrictAmount = dayItem.isCapitalDistrict ? formGroup.controls.amount.value! / 2 : 0
             formGroup.controls.capitalDistrictAmount.setValue(Math.ceil(capitalDistrictAmount), {onlySelf: true, emitEvent: false})
           }
+          this.calculateAmountToBeRendered()
         }, error: (e) => {
           throw e
         }
@@ -142,7 +144,12 @@ export class PrincipalComponent implements OnInit {
   }
 
   private calculateTotalAmount = (): void => {
-    const amount = this.formGroup.controls.totalDays.getRawValue().reduce((a, b) => (b.amount ?? 0) + a, 0)
-    this.formGroup.controls.totalAmount.setValue(amount)
+    const totalAmount = this.formGroup.controls.totalDays.getRawValue().reduce((a, b) => (b.amount ?? 0) + a, 0)
+    this.formGroup.controls.totalAmount.setValue(totalAmount)
+  }
+
+  private calculateAmountToBeRendered = (): void => {
+    const amountPayable = this.formGroup.controls.totalDays.getRawValue().reduce((a, b) => (b.capitalDistrictAmount ?? 0) + a, 0)
+    this.formGroup.controls.amountToBeRendered.setValue(amountPayable)
   }
 }
