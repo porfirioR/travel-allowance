@@ -5,18 +5,17 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Firestore, Query, collection, collectionData } from '@angular/fire/firestore';
-import { DailyWageModel } from '../../models/daily-wage-model';
-import { Observable, combineLatest } from 'rxjs';
-import { DailyWageForm } from '../../forms/daily-wage.form';
-import { DepartmentApiModel } from '../../models/department-api-model';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { DepartmentViewModel } from '../../models/department-view-model';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+import { DailyWageForm } from '../../forms/daily-wage.form';
+import { DailyWageModel } from '../../models/daily-wage-model';
+import { DepartmentApiModel } from '../../models/department-api-model';
+import { DepartmentViewModel } from '../../models/department-view-model';
+import { HelperService } from '../../services/helper.service';
 
 @Component({
   selector: 'app-configuration',
@@ -43,7 +42,6 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
   styleUrl: './configuration.component.scss'
 })
 export class ConfigurationComponent {
-  private firestore: Firestore = inject(Firestore)
   private router: Router = inject(Router)
   protected loading = true
   protected formGroup = new FormGroup<DailyWageForm>({
@@ -57,32 +55,26 @@ export class ConfigurationComponent {
   protected displayedColumns: string[] = ['id', 'name', 'totalDay', 'totalAmount'];
   protected mask = 'separator.0'
   protected thousandSeparator = '.'
+  protected departmentModels: DepartmentApiModel[]
+  protected dailyWageModel: DailyWageModel
 
-  ngOnInit(): void {
-    const departmentRef = collection(this.firestore, 'departments')
-    const departments$: Observable<DepartmentApiModel[]> = collectionData<DepartmentApiModel>(departmentRef as Query<DepartmentApiModel>, { idField: 'id' })
-    const dailyWageRef = collection(this.firestore, 'dailyWage')
-    const dailyWages$: Observable<DailyWageModel[]> = collectionData<DailyWageModel>(dailyWageRef as Query<DailyWageModel>, { idField: 'id' })
-
-    combineLatest([departments$, dailyWages$]).subscribe({
-      next: ([departments, dailyWages]) => {
-        const dailyWage = dailyWages.pop()
-        this.formGroup.patchValue({
-          amount: dailyWage?.amount,
-          total100: dailyWage?.total100,
-          total80: dailyWage?.total80,
-          total40: dailyWage?.total40,
-        })
-        this.departments = departments.sort((a, b) => a.id - b.id).map(x => new DepartmentViewModel(x.id, x.name, x.totalDay, Math.ceil(x.totalDay * dailyWage!.amount)))
-        this.loading = false
-      }, error: (e) => {
-        this.loading = false
-        throw e
-      }
-    })
+  constructor(private readonly helperService: HelperService) {
+    this.departmentModels = this.helperService.getDepartment()
+    this.dailyWageModel = this.helperService.getDailyWage()
   }
 
-  protected returnHome = () => {
+  ngOnInit(): void {
+    this.formGroup.patchValue({
+      amount: this.dailyWageModel.amount,
+      total100: this.dailyWageModel.total100,
+      total80: this.dailyWageModel.total80,
+      total40: this.dailyWageModel.total40,
+    })
+    this.departments = this.departmentModels.sort((a, b) => a.id - b.id).map(x => new DepartmentViewModel(x.id, x.name, x.totalDay, Math.ceil(x.totalDay * this.dailyWageModel.amount)))
+    this.loading = false
+  }
+
+  protected returnHome = (): void => {
     this.router.navigate([''])
   }
 }
