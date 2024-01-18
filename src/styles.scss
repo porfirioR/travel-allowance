@@ -2,6 +2,7 @@
 // For more information: https://material.angular.io/guide/theming
 @use "@angular/material" as mat;
 // Plus imports for other components in your app.
+@use "sass:math";
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
@@ -50,14 +51,6 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-.w-100 {
-  width: 100%;
-}
-
-.w-50 {
-  width: 50%;
-}
-
 .align-center {
   display: flex;
   justify-content: center;
@@ -74,4 +67,17 @@ mat-form-field {
 
 .mat-mdc-outlined-button {
   border-color: #fff !important;
+}
+
+$start: 1;
+$end: 100;
+@for $i from $start + 1 through $end {
+  $percentage: math.percentage(math.div($i, 100));
+  .w-#{$i} {
+    width: #{$percentage} !important;
+  }
+}
+
+input {
+  color: black !important;
 }
