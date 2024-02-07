@@ -133,6 +133,32 @@ export class PrincipalComponent implements OnInit {
     this.calculateTotalAmount()
   }
 
+  protected downloadFile = (): void => {
+    const header = 'Fecha generada,Días,Departamento,Monto por dia,Es Capital,Monto a rendir\r\n'
+    const today = new Date()
+    const formattedDate = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}`
+    const body = this.formGroup.controls.totalDays.getRawValue().map((x, i) =>
+      [
+        i === 0 ? formattedDate : '',
+        +i + 1,
+        this.departmentModels.find(y => y.id === x.departmentId)?.name,
+        `Gs. ${x.amount?.toLocaleString('es')}`,
+        x.isCapitalDistrict ? 'Si' : 'No',
+        `Gs. ${x.isCapitalDistrict ? x.capitalDistrictAmount?.toLocaleString('es') : 0}`
+      ].join(',')
+    ).join('\r\n')
+    const capitalDistrictAmount = this.formGroup.controls.totalDays.controls.reduce((a, b) => a + b.controls.capitalDistrictAmount.getRawValue()!, 0)
+    const footer = `\r\n,,,Gs. ${this.formGroup.controls.totalAmount.value?.toLocaleString('es')},,Gs. ${capitalDistrictAmount?.toLocaleString('es')}`
+    const file = `${header}${body}${footer}`
+    const encodedUri = `data:text/csv;charset=utf-8,%EF%BB%BF${encodeURI(file)}`
+    const a: HTMLAnchorElement = document.createElement('a') as HTMLAnchorElement
+    a.href = encodedUri
+    a.download = `Víatico-fecha-${formattedDate}}`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+  }
+
   private getReturnAmount = (departmentId: number | null, isLastItem = false, isSingleOne = false): number | null => {
     if (!departmentId) {
       return null

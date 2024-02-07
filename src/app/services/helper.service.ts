@@ -119,11 +119,23 @@ export class HelperService {
     total60: 0.6,
     total80: 0.8
   }
+  private dailyWageAfterFebruary: DailyWageModel = {
+    id: '1',
+    amount: 98089,
+    total100: 1,
+    total40: 0.4,
+    total60: 0.6,
+    total80: 0.8
+  }
 
   constructor() { }
 
   public getDepartment = () => this.departments.sort((a, b) => a.id - b.id)
 
-  public getDailyWage = (): DailyWageModel => this.dailyWage
+  public getDailyWage = (): DailyWageModel => {
+    const currentDate = new Date()
+    const firstOfMarch = new Date(currentDate.getFullYear(), 2, 1)
+    return currentDate < firstOfMarch ? this.dailyWage : this.dailyWageAfterFebruary
+  }
 
 }
