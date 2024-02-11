@@ -23,10 +23,6 @@ jobs:
         with:
           name: dist
           path: dist
-      - name: Prepare Google Application Credentials
-        shell: bash
-        run: |
-          echo "${{ secrets.DEV_GOOGLE_APPLICATION_CREDENTIALS }}" | base64 --decode > "google-application-credentials.json"
 
   deploy:
     name: Deploy
@@ -44,6 +40,8 @@ jobs:
         uses: w9jds/firebase-action@master
         with:
           args: deploy --only hosting
+        env:
+          GCP_SA_KEY: ${{ secrets.DEV_GOOGLE_APPLICATION_CREDENTIALS }}
 
       - name: Remove credentials file
         if: success() || failure()
