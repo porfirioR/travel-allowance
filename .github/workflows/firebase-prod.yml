@@ -42,8 +42,4 @@ jobs:
           args: deploy --only hosting
         env:
           GCP_SA_KEY: ${{ secrets.DEV_GOOGLE_APPLICATION_CREDENTIALS }}
-
-      - name: Remove credentials file
-        if: success() || failure()
-        run: |
-          rm google-application-credentials.json
+          FIREBASE_CLI_EXPERIMENTS: webframeworks
