@@ -36,6 +36,6 @@ jobs:
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
-          args: deploy --only hosting --proyect travel-allowance-app
+          args: deploy --only hosting
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TRAVEL_ALLOWANCE_APP }}
