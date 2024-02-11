@@ -8,6 +8,9 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    env:
+      GOOGLE_APPLICATION_CREDENTIALS: google-application-credentials.json
+
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
@@ -20,6 +23,10 @@ jobs:
         with:
           name: dist
           path: dist
+      - name: Prepare Google Application Credentials
+        shell: bash
+        run: |
+          echo "${{ secrets.DEV_GOOGLE_APPLICATION_CREDENTIALS }}" | base64 --decode > "google-application-credentials.json"
 
   deploy:
     name: Deploy
@@ -37,5 +44,8 @@ jobs:
         uses: w9jds/firebase-action@master
         with:
           args: deploy --only hosting
-        env:
-          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_TRAVEL_ALLOWANCE_APP }}
+
+      - name: Remove credentials file
+        if: success() || failure()
+        run: |
+          rm google-application-credentials.json
