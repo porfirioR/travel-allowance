@@ -1,7 +1,7 @@
 {
   "hosting": {
     "target": "mi-viatico",
-    "public": "dist/travel-allowance",
+    "public": "public",
     "frameworksBackend": {},
     "ignore": [
       "firebase.json",
