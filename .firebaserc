@@ -5,10 +5,11 @@
   "targets": {
     "mi-viatico": {
       "hosting": {
-        "target": [
+        "mi-viatico": [
           "mi-viatico"
         ]
       }
     }
-  }
+  },
+  "etags": {}
 }
