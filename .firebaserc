@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "mi-viatico"
+  },
+  "targets": {
+    "mi-viatico": {
+      "hosting": {
+        "target": [
+          "mi-viatico"
+        ]
+      }
+    }
   }
 }
