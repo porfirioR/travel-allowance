@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "target": "travel-allowance",
+    "target": "mi-viatico",
     "public": "dist/travel-allowance",
     "frameworksBackend": {},
     "ignore": [
