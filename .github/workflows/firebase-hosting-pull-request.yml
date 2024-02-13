@@ -15,3 +15,5 @@ jobs:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MI_VIATICO_APP }}'
           projectId: mi-viatico-app
+        env:
+          FIREBASE_CLI_EXPERIMENTS: webframeworks
