@@ -1,7 +1,8 @@
 {
   "hosting": {
-    "public": "dist/travel-allowance/browser",
+    "source": ".",
     "ignore": [
+      "firebase.json",
       "**/.*",
       "**/node_modules/**"
     ],
@@ -25,11 +26,8 @@
         ]
       }
     ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
+    "frameworksBackend": {
+      "region": "us-west1"
+    }
   }
 }
