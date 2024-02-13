@@ -1,8 +1,6 @@
 {
   "hosting": {
-    "target": "mi-viatico",
-    "public": "public",
-    "frameworksBackend": {},
+    "source": ".",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -28,11 +26,8 @@
         ]
       }
     ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
+    "frameworksBackend": {
+      "region": "us-central1"
+    }
   }
 }

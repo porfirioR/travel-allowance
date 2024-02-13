@@ -1,15 +1,5 @@
 {
   "projects": {
-    "default": "mi-viatico"
-  },
-  "targets": {
-    "mi-viatico": {
-      "hosting": {
-        "mi-viatico": [
-          "mi-viatico"
-        ]
-      }
-    }
-  },
-  "etags": {}
+    "default": "mi-viatico-app"
+  }
 }
