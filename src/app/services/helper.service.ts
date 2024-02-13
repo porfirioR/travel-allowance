@@ -111,7 +111,7 @@ export class HelperService {
     }
   ]
 
-  private dailyWage: DailyWageModel = {
+  private dailyWage2023: DailyWageModel = {
     id: '1',
     amount: 98089,
     total100: 1,
@@ -119,9 +119,10 @@ export class HelperService {
     total60: 0.6,
     total80: 0.8
   }
-  private dailyWageAfterFebruary: DailyWageModel = {
+
+  private dailyWage2024: DailyWageModel = {
     id: '1',
-    amount: 98089,
+    amount: 103091,
     total100: 1,
     total40: 0.4,
     total60: 0.6,
@@ -130,12 +131,8 @@ export class HelperService {
 
   constructor() { }
 
-  public getDepartment = () => this.departments.sort((a, b) => a.id - b.id)
+  public getDepartment = (): DepartmentApiModel[] => this.departments.sort((a, b) => a.id - b.id)
 
-  public getDailyWage = (): DailyWageModel => {
-    const currentDate = new Date()
-    const firstOfMarch = new Date(currentDate.getFullYear(), 2, 1)
-    return currentDate < firstOfMarch ? this.dailyWage : this.dailyWageAfterFebruary
-  }
+  public getDailyWage = (): DailyWageModel => this.dailyWage2024
 
 }
