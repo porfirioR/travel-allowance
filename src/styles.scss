@@ -9,13 +9,86 @@
 // Be sure that you only ever include this mixin once!
 @include mat.core();
 
+
+$md-blue-palette: (
+  50: #e4e9f7,
+  100: #bbc8eb,
+  200: #8ea4dd,
+  300: #6080cf,
+  400: #3e64c5,
+  500: #1c49bb,
+  600: #1942b5,
+  700: #1439ac,
+  800: #1131a4,
+  900: #092196,
+  A100: #c3cbff,
+  A200: #909fff,
+  A400: #5d72ff,
+  A700: #445cff,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #ffffff,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #ffffff,
+    A700: #ffffff,
+  ),
+);
+
+/* For use in src/lib/core/theming/_palette.scss */
+$md-alert-palette: (
+  50: #fce4e4,
+  100: #f6bcbb,
+  200: #f1908e,
+  300: #eb6460,
+  400: #e6423e,
+  500: #e2211c,
+  600: #df1d19,
+  700: #da1814,
+  800: #d61411,
+  900: #cf0b09,
+  A100: #fff9f9,
+  A200: #ffc6c6,
+  A400: #ff9493,
+  A700: #ff7a7a,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
+
+
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$travel-allowance-primary: mat.define-palette(mat.$indigo-palette);
+$travel-allowance-primary: mat.define-palette(
+  $md-blue-palette,
+  500
+);
+
 $travel-allowance-accent: mat.define-palette(
-  mat.$pink-palette,
-  A200,
+  $md-alert-palette,
+  500,
   A100,
   A400
 );

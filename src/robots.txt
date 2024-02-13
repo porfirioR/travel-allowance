@@ -1,3 +1,3 @@
 User-agent: *
-Disallow: 
-Sitemap: https://travel-allowance-app.web.app/sitemap.xml
+Disallow:
+Sitemap: https://mi-viatico-app.web.app/sitemap.xml
