@@ -7,5 +7,6 @@ export interface CalculateForm {
   departmentId: FormControl<number | null>
   totalDays: FormArray<FormGroup<DayItemForm>>
   totalAmount: FormControl<number | null>
+  seventyTotalAmount: FormControl<number | null>
   amountToBeRendered: FormControl<number | null>
 }

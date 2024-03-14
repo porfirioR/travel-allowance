@@ -109,7 +109,11 @@
         <legend>Montos acumulados</legend>
         <mat-card-footer id="amounts">
           <mat-label>
-            Viático Total: <b>Gs. {{formGroup.value.totalAmount | number: '': 'es'}}</b>
+            Viático {{formGroup.value.seventyTotalAmount ? 'parcial': 'total'}}: <b>Gs. {{formGroup.value.totalAmount | number: '': 'es'}}</b>
+            @if (formGroup.controls.totalDays.controls.length > 3) {
+              <br>
+              Viático total(70%): <b>Gs. {{formGroup.value.seventyTotalAmount | number: '': 'es'}}</b>
+            }
           </mat-label>
           <mat-label>
             Monto Total a Rendir: <b>Gs. {{formGroup.value.amountToBeRendered | number: '': 'es'}} </b>
