@@ -57,6 +57,7 @@ export class PrincipalComponent implements OnInit {
     departmentId: new FormControl(),
     totalDays: new FormArray<FormGroup<DayItemForm>>([]),
     totalAmount: new FormControl(0),
+    seventyTotalAmount: new FormControl(null),
     amountToBeRendered: new FormControl(0)
   })
   protected loading = true
@@ -172,6 +173,7 @@ export class PrincipalComponent implements OnInit {
   private calculateTotalAmount = (): void => {
     const totalAmount = this.formGroup.controls.totalDays.getRawValue().reduce((a, b) => (b.amount ?? 0) + a, 0)
     this.formGroup.controls.totalAmount.setValue(totalAmount)
+    this.formGroup.controls.seventyTotalAmount.setValue(this.formGroup.controls.totalDays.length > 3 ? Math.round(totalAmount * 0.7) : null)
   }
 
   private calculateAmountToBeRendered = (): void => {
