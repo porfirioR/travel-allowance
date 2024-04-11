@@ -165,7 +165,7 @@ export class PrincipalComponent implements OnInit {
       return null
     }
     const department = this.departmentModels.find(y => y.id === departmentId)
-    const percentage = isLastItem ? isSingleOne ? this.dailyWageModel!.total60 : this.dailyWageModel!.total40 : this.dailyWageModel!.total80
+    const percentage = isLastItem ? isSingleOne ? this.dailyWageModel!.total40 : this.dailyWageModel!.total40 : this.dailyWageModel!.total80
     const amount = this.dailyWageModel!.amount * department!.totalDay * percentage
     return Math.ceil(amount)
   }
